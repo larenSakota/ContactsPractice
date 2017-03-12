@@ -9,6 +9,8 @@
 import UIKit
 
 class ContactsTableViewController: UITableViewController {
+    
+    var contacts: [Contact] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,7 @@ class ContactsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return self.contacts.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,9 +41,22 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         
-        // Configure the cell...
-        cell.textLabel?.text = "A fine example of a UITableViewCell."
+        let contact = self.contacts[indexPath.row]
+        
+        if let name = contact.name {
+            cell.textLabel?.text = name
+        } else {
+            cell.textLabel?.text = "No Name"
+        }
+        
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)!
+        let contact = self.contacts[indexPath.row]
+        let destination = segue.destination as! DetailViewController
+        destination.contact = contact
     }
 
     /*

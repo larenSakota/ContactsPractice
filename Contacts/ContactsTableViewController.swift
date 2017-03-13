@@ -11,9 +11,15 @@ import UIKit
 class ContactsTableViewController: UITableViewController {
     
     var contacts: [Contact] = []
+    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let moveButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(ContactsTableViewController.toggleEdit))
+//        navigationItem.leftBarButtonItem = moveButton
+        navigationItem.leftBarButtonItem = editButtonItem
         
         let sheilla = Contact(phoneNumber: "867-5309")
         let laren = Contact(name: "Laren", phoneNumber: "888-888-8888")
@@ -22,9 +28,24 @@ class ContactsTableViewController: UITableViewController {
         self.contacts.append(sheilla)
         self.contacts.append(laren)
         self.contacts.append(ging)
-
-
+        
     }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView.isEditing {
+            return .none
+        } else {
+            return .delete
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+//    func toggleEdit() {
+//        tableView.setEditing(!tableView.isEditing, animated: true)
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -63,32 +84,30 @@ class ContactsTableViewController: UITableViewController {
         destination.contact = contact
     }
 
-    /*
-    // Override to support conditional editing of the table view.
+
+//     Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+//         Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
-    /*
+
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            self.contacts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
-    /*
+
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        let contactMoving = contacts.remove(at: fromIndexPath.row)
+        contacts.insert(contactMoving, at: to.row)
     }
-    */
 
     /*
     // Override to support conditional rearranging of the table view.

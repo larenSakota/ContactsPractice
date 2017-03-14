@@ -22,6 +22,9 @@ class ContactsTableViewController: UITableViewController {
 //        navigationItem.leftBarButtonItem = moveButton
         navigationItem.leftBarButtonItem = editButtonItem
         
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ContactsTableViewController.addContact))
+        navigationItem.rightBarButtonItem = addButton
+    
         let sheilla = Contact(phoneNumber: "867-5309")
         let laren = Contact(name: "Laren", phoneNumber: "888-888-8888")
         let ging = Contact(name: "Ging")
@@ -30,6 +33,18 @@ class ContactsTableViewController: UITableViewController {
         self.contacts.append(laren)
         self.contacts.append(ging)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    func addContact() {
+        let newContact = Contact(name: "New Contact")
+        self.contacts.append(newContact)
+        let newIndexPath = IndexPath(row: self.contacts.count - 1, section: 0)
+        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {

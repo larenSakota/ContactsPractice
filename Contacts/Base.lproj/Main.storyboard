@@ -63,38 +63,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6t9-we-eM5">
-                                <rect key="frame" x="16" y="72" width="343" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="z0f-PF-qCZ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pVF-5N-YBP">
+                                <rect key="frame" x="16" y="72" width="343" height="30"/>
                                 <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fjd-Zl-zar">
-                                <rect key="frame" x="16" y="116" width="343" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="27" id="CW2-Vd-DRK"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aqY-Cx-g8k">
+                                <rect key="frame" x="16" y="110" width="343" height="30"/>
                                 <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Fjd-Zl-zar" firstAttribute="top" secondItem="6t9-we-eM5" secondAttribute="bottom" constant="8" id="D4l-Qa-7xo"/>
-                            <constraint firstItem="Fjd-Zl-zar" firstAttribute="trailing" secondItem="PQm-hO-cWS" secondAttribute="trailingMargin" id="GB9-mE-eo7"/>
-                            <constraint firstItem="6t9-we-eM5" firstAttribute="top" secondItem="8vL-O6-8at" secondAttribute="bottom" constant="8" id="RfM-ZX-6xw"/>
-                            <constraint firstItem="6t9-we-eM5" firstAttribute="leading" secondItem="PQm-hO-cWS" secondAttribute="leadingMargin" id="brG-Ky-JA7"/>
-                            <constraint firstItem="6t9-we-eM5" firstAttribute="trailing" secondItem="PQm-hO-cWS" secondAttribute="trailingMargin" id="e4o-iJ-jwK"/>
-                            <constraint firstItem="Fjd-Zl-zar" firstAttribute="leading" secondItem="PQm-hO-cWS" secondAttribute="leadingMargin" id="whu-7o-ji8"/>
+                            <constraint firstItem="aqY-Cx-g8k" firstAttribute="trailing" secondItem="PQm-hO-cWS" secondAttribute="trailingMargin" id="14M-hT-QRO"/>
+                            <constraint firstItem="pVF-5N-YBP" firstAttribute="top" secondItem="8vL-O6-8at" secondAttribute="bottom" constant="8" id="4x6-iz-g9D"/>
+                            <constraint firstItem="aqY-Cx-g8k" firstAttribute="top" secondItem="pVF-5N-YBP" secondAttribute="bottom" constant="8" id="8Gs-dU-uzX"/>
+                            <constraint firstItem="pVF-5N-YBP" firstAttribute="leading" secondItem="PQm-hO-cWS" secondAttribute="leadingMargin" id="8jx-Sw-VNU"/>
+                            <constraint firstItem="aqY-Cx-g8k" firstAttribute="leading" secondItem="PQm-hO-cWS" secondAttribute="leadingMargin" id="Aoz-sv-Qu4"/>
+                            <constraint firstItem="pVF-5N-YBP" firstAttribute="trailing" secondItem="PQm-hO-cWS" secondAttribute="trailingMargin" id="c1f-wr-mNh"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="nameLabel" destination="6t9-we-eM5" id="BbX-tH-YYi"/>
-                        <outlet property="phoneNumberLabel" destination="Fjd-Zl-zar" id="DMW-ff-64a"/>
+                        <outlet property="nameField" destination="pVF-5N-YBP" id="Xmb-gH-WZq"/>
+                        <outlet property="phoneNumberField" destination="aqY-Cx-g8k" id="EsY-g6-CXp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V81-Tf-dC5" userLabel="First Responder" sceneMemberID="firstResponder"/>

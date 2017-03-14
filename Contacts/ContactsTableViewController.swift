@@ -11,11 +11,12 @@ import UIKit
 class ContactsTableViewController: UITableViewController {
     
     var contacts: [Contact] = []
-    
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+//        tableView.setEditing(true, animated: true)
         
 //        let moveButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(ContactsTableViewController.toggleEdit))
 //        navigationItem.leftBarButtonItem = moveButton
@@ -64,7 +65,7 @@ class ContactsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contacts", for: indexPath)
         
         let contact = self.contacts[indexPath.row]
         
@@ -87,7 +88,6 @@ class ContactsTableViewController: UITableViewController {
 
 //     Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//         Return false if you do not want the specified item to be editable.
         return true
     }
 
@@ -104,10 +104,14 @@ class ContactsTableViewController: UITableViewController {
 
 
     // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let contactMoving = contacts.remove(at: fromIndexPath.row)
-        contacts.insert(contactMoving, at: to.row)
+        contacts.insert(contactMoving, at: destinationIndexPath.row)
+        tableView.reloadData()
+//        swap(&contacts[fromIndexPath.row], &contacts[destinationIndexPath.row])
+//        tableView.reloadData()
     }
+
 
     /*
     // Override to support conditional rearranging of the table view.

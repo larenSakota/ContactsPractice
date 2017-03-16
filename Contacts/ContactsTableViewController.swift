@@ -7,38 +7,33 @@
 //
 
 import UIKit
+import os.log
+
 
 class ContactsTableViewController: UITableViewController {
     
-    var contacts: [Contact] = []
+    var contacts = [Contact]()
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        tableView.setEditing(true, animated: true)
-        
-//        let moveButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(ContactsTableViewController.toggleEdit))
-//        navigationItem.leftBarButtonItem = moveButton
         navigationItem.leftBarButtonItem = editButtonItem
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ContactsTableViewController.addContact))
-        navigationItem.rightBarButtonItem = addButton
-    
-        let sheilla = Contact(phoneNumber: "867-5309")
-        let laren = Contact(name: "Laren", phoneNumber: "888-888-8888")
-        let ging = Contact(name: "Ging")
-        
-        self.contacts.append(sheilla)
-        self.contacts.append(laren)
-        self.contacts.append(ging)
-        
+        // Load any saved meals, otherwise load sample data.
+        if let savedContacts = loadContacts() {
+            contacts += savedContacts
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
+    
+//    func addBtnPressed(sender: UIBarButtonItem) {
+//        self.performSegue(withIdentifier: "newContact", sender: self)
+//    }
     
     func addContact() {
         let newContact = Contact(name: "New Contact")
@@ -58,10 +53,6 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
-//    func toggleEdit() {
-//        tableView.setEditing(!tableView.isEditing, animated: true)
-//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -80,15 +71,20 @@ class ContactsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "contacts", for: indexPath)
         
-        let contact = self.contacts[indexPath.row]
+        // Table view cells are reused and should be dequeued using a cell identifier.
+        let cellIdentifier = "ContactTableViewCell"
         
-        if let name = contact.name {
-            cell.textLabel?.text = name
-        } else {
-            cell.textLabel?.text = "No Name"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ContactTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of ContactTableViewCell.")
         }
+        
+        // Fetches the appropriate meal for the data source layout.
+        let meal = meals[indexPath.row]
+        
+        cell.nameLabel.text = meal.name
+        cell.photoImageView.image = meal.photo
+        cell.ratingControl.rating = meal.rating
         
         return cell
     }
@@ -123,8 +119,7 @@ class ContactsTableViewController: UITableViewController {
         let contactMoving = contacts.remove(at: fromIndexPath.row)
         contacts.insert(contactMoving, at: destinationIndexPath.row)
         tableView.reloadData()
-//        swap(&contacts[fromIndexPath.row], &contacts[destinationIndexPath.row])
-//        tableView.reloadData()
+
     }
 
 
@@ -136,14 +131,84 @@ class ContactsTableViewController: UITableViewController {
     }
     */
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+            
+        case "AddItem":
+            os_log("Adding a new contact.", log: OSLog.default, type: .debug)
+            
+        case "ShowDetail":
+            guard let contactDetailViewController = segue.destination as? DetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedContactCell = sender as? ContactTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedContactCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedContact = contacts[indexPath.row]
+            contactDetailViewController.contact = selectedContact
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+        }
     }
-    */
+    
+    //MARK: Actions
+    
+    @IBAction func unwindToContactList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? DetailViewController, let contact = sourceViewController.contact {
+            
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Update an existing contact.
+                contacts[selectedIndexPath.row] = contact
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            }
+            else {
+                // Add a new contact.
+                let newIndexPath = IndexPath(row: contacts.count, section: 0)
+                
+                contacts.append(contact)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
+            
+            // Save the contacts.
+            saveContacts()
+        }
+    }
+
+
+    
+//    let sheilla = Contacts.Person.Name
+//    let laren = Contacts.Person.Name
+//    let ging = Contacts.Person.Name
+//    
+//    self.contacts.append(sheilla)
+//    self.contacts.append(laren)
+//    self.contacts.append(ging)
+    
+    private func saveContacts() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(contacts, toFile: Contact.ArchiveURL.path)
+        if isSuccessfulSave {
+            os_log("Contacts successfully saved.", log: OSLog.default, type: .debug)
+        } else {
+            os_log("Failed to save contacts...", log: OSLog.default, type: .error)
+        }
+    }
+    
+    private func loadContacts() -> [Contact]?  {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Contact.ArchiveURL.path) as? [Contact]
+    }
 
 }

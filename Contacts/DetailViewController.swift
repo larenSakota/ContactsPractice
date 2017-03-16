@@ -7,67 +7,101 @@
 //
 
 import UIKit
+import os.log
 
-class DetailViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet var nameField: UITextField!
-    @IBOutlet var phoneNumberField: UITextField!
-   
+class DetailViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    //MARK: Properties
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var phoneNumber: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    /*
+     This value is either passed by `ContactsTableViewController` in `prepare(for:sender:)`
+     or constructed as part of adding a new contact.
+     */
     var contact: Contact?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let btnCancel = UIButton()
-//        btnCancel.setImage(UIImage(named: "crossbuttonimagename"), for: .normal)
-//        btnCancel.addTarget(self, action: Selector(("youraction")), for: .touchUpInside)
-//        
-//        //Set Left Bar Button item
-//        let leftBarButton = UIBarButtonItem()
-//        leftBarButton.customView = btnCancel
-//        self.navigationItem.leftBarButtonItem = leftBarButton
+        // Handle the text field’s user input through delegate callbacks.
+        nameTextField.delegate = self
         
-        self.nameField.delegate = self
-        self.phoneNumberField.delegate = self
-        
-        if let contact = self.contact {
-            if let name = contact.name {
-                self.nameField.text = name
-            }
-            if let phoneNumber = contact.phoneNumber {
-                self.phoneNumberField.text = phoneNumber
-            }
+        // Set up views if editing an existing Contact.
+        if let contact = contact {
+            navigationItem.title = contact.name
+            nameTextField.text = contact.name
+            phoneNumber.text = contact.number
+ 
         }
+        
+        // Enable the Save button only if the text field has a valid Contact name.
+        updateSaveButtonState()
+    }
+    
+    //MARK: UITextFieldDelegate
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Disable the Save button while editing.
+        saveButton.isEnabled = false
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == self.nameField {
-            self.contact?.name = textField.text
-        } else if textField == self.phoneNumberField {
-            self.contact?.phoneNumber = textField.text
+        updateSaveButtonState()
+        navigationItem.title = textField.text
+    }
+    
+
+    
+    //MARK: Navigation
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
+        let isPresentingInAddContactMode = presentingViewController is UINavigationController
+        
+        if isPresentingInAddContactMode {
+            dismiss(animated: true, completion: nil)
+        }
+        else if let owningNavigationController = navigationController{
+            owningNavigationController.popViewController(animated: true)
+        }
+        else {
+            fatalError("The ContactViewController is not inside a navigation controller.")
         }
     }
     
-    @IBAction func cancelBtn(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // This method lets you configure a view controller before it's presented.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        
+        super.prepare(for: segue, sender: sender)
+        
+        // Configure the destination view controller only when the save button is pressed.
+        guard let button = sender as? UIBarButtonItem, button === saveButton else {
+            os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+            return
+        }
+        
+        let name = nameTextField.text ?? ""
+        let number = phoneNumber.text ?? ""
+        
+        // Set the contact to be passed to ContactsTableViewController after the unwind segue.
+        contact = Contact(name: name, number: number)
+        
 
+    }
+    //MARK: Private Methods
+    
+    private func updateSaveButtonState() {
+        // Disable the Save button if the text field is empty.
+        let text = nameTextField.text ?? ""
+        saveButton.isEnabled = !text.isEmpty
+    }
 }

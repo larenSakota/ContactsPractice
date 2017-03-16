@@ -26,21 +26,21 @@ class ContactsTableViewController: UITableViewController {
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        tableView.reloadData()
+//    }
     
 //    func addBtnPressed(sender: UIBarButtonItem) {
 //        self.performSegue(withIdentifier: "newContact", sender: self)
 //    }
     
-    func addContact() {
-        let newContact = Contact(name: "New Contact")
-        self.contacts.append(newContact)
-        let newIndexPath = IndexPath(row: self.contacts.count - 1, section: 0)
-        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-    }
+//    func addContact() {
+//        let newContact = Contact(name: "New Contact")
+//        self.contacts.append(newContact)
+//        let newIndexPath = IndexPath(row: self.contacts.count - 1, section: 0)
+//        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+//    }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView.isEditing {
@@ -80,37 +80,36 @@ class ContactsTableViewController: UITableViewController {
         }
         
         // Fetches the appropriate meal for the data source layout.
-        let meal = meals[indexPath.row]
+        let contact = contacts[indexPath.row]
         
-        cell.nameLabel.text = meal.name
-        cell.photoImageView.image = meal.photo
-        cell.ratingControl.rating = meal.rating
+        cell.nameLabel.text = contact.name
         
         return cell
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)!
-        let contact = self.contacts[indexPath.row]
-        let destination = segue.destination as! DetailViewController
-        destination.contact = contact
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)!
+//        let contact = self.contacts[indexPath.row]
+//        let destination = segue.destination as! DetailViewController
+//        destination.contact = contact
+//    }
 
-
-//     Override to support conditional editing of the table view.
+    
+    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-
-    // Override to support editing the table view.
+    // Override to support editing of the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            self.contacts.remove(at: indexPath.row)
+            // Delete the row from the data source
+            contacts.remove(at: indexPath.row)
+            saveContacts()
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
 
 

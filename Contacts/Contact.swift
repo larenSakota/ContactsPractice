@@ -37,13 +37,14 @@ class Contact: NSObject, NSCoding {
             return nil
         }
         
-        // The number must not be empty
-        guard !number.isEmpty else {
-            return nil
-        }
+//        // The number must not be empty
+//        guard !number.isEmpty else {
+//            return nil
+//        }
         
-        // Initialization should fail if there is no name or no number.
-        if name.isEmpty || number.isEmpty  {
+        
+        // Initialization should fail if there is no name.
+        if name.isEmpty {
             return nil
         }
         
@@ -67,6 +68,12 @@ class Contact: NSObject, NSCoding {
             os_log("Unable to decode the name for a Contact object.", log: OSLog.default, type: .debug)
             return nil
         }
+        
+        guard let number = aDecoder.decodeObject(forKey: Person.number) as? String else {
+            os_log("Unable to decode the number for a Contact object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+
         
         
         // Must call designated initializer.

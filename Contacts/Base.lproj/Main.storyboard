@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellIdentifier" textLabel="XuW-uY-BGe" style="IBUITableViewCellStyleDefault" id="3aQ-7T-QR1" userLabel="ContactTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellIdentifier" textLabel="XuW-uY-BGe" style="IBUITableViewCellStyleDefault" id="3aQ-7T-QR1" userLabel="ContactTableViewCell" customClass="ContactTableViewCell" customModule="Contacts" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3aQ-7T-QR1" id="z4g-EN-M83">
@@ -36,7 +36,8 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="kw1-TM-kpD" kind="show" id="pv4-td-pyA"/>
+                                    <outlet property="nameLabel" destination="XuW-uY-BGe" id="5OQ-Ho-IMC"/>
+                                    <segue destination="kw1-TM-kpD" kind="show" identifier="ShowDetail" id="pv4-td-pyA"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -49,7 +50,7 @@
                     <navigationItem key="navigationItem" title="Contacts" id="9v2-Ky-rIa">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="cD9-lF-Rmn">
                             <connections>
-                                <segue destination="ndO-EV-QzB" kind="presentation" id="Mao-Bo-38K"/>
+                                <segue destination="ndO-EV-QzB" kind="presentation" identifier="AddItem" id="qSb-Fk-J9A"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -96,16 +97,26 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="New Contact" id="kTf-h8-P0q">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bNj-y0-HGh"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="rlh-m4-BPr"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bNj-y0-HGh">
+                            <connections>
+                                <action selector="cancel:" destination="kw1-TM-kpD" id="99L-2m-b4x"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="rlh-m4-BPr">
+                            <connections>
+                                <segue destination="cNK-i3-rTV" kind="unwind" unwindAction="unwindToContactListWithSender:" id="4Xj-nG-uPI"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="nameField" destination="pVF-5N-YBP" id="Xmb-gH-WZq"/>
-                        <outlet property="phoneNumberField" destination="aqY-Cx-g8k" id="EsY-g6-CXp"/>
+                        <outlet property="nameTextField" destination="pVF-5N-YBP" id="4E6-Yr-9W5"/>
+                        <outlet property="phoneNumber" destination="aqY-Cx-g8k" id="cZz-L0-O2C"/>
+                        <outlet property="saveButton" destination="rlh-m4-BPr" id="io7-Lp-ly4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V81-Tf-dC5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="cNK-i3-rTV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3332" y="65"/>
         </scene>
@@ -147,6 +158,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="pv4-td-pyA"/>
+        <segue reference="5Mu-SV-MKb"/>
     </inferredMetricsTieBreakers>
 </document>

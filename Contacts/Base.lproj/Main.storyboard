@@ -58,7 +58,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a4s-OB-qPg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1632.8" y="65.217391304347828"/>
+            <point key="canvasLocation" x="1338" y="64"/>
         </scene>
         <!--New Contact-->
         <scene sceneID="BwS-pf-3Uo">
@@ -104,7 +104,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="rlh-m4-BPr">
                             <connections>
-                                <segue destination="cNK-i3-rTV" kind="unwind" unwindAction="unwindToContactListWithSender:" id="4Xj-nG-uPI"/>
+                                <segue destination="cNK-i3-rTV" kind="unwind" unwindAction="unwindToContactListWithSender:" id="D2c-H4-c8L"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -118,7 +118,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V81-Tf-dC5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cNK-i3-rTV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3332" y="65"/>
+            <point key="canvasLocation" x="3001" y="94"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GTE-ZJ-n9V">
@@ -136,7 +136,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yfh-Od-Dkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="818" y="65"/>
+            <point key="canvasLocation" x="606" y="65"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wY3-3t-Rug">
@@ -154,10 +154,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H0X-rJ-oIt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2471" y="493"/>
+            <point key="canvasLocation" x="2168" y="-276"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="5Mu-SV-MKb"/>
+        <segue reference="pv4-td-pyA"/>
     </inferredMetricsTieBreakers>
 </document>

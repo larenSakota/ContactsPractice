@@ -37,14 +37,13 @@ class Contact: NSObject, NSCoding {
             return nil
         }
         
-//        // The number must not be empty
-//        guard !number.isEmpty else {
-//            return nil
-//        }
-        
+        // The number must not be empty
+        guard !number.isEmpty else {
+            return nil
+        }
         
         // Initialization should fail if there is no name.
-        if name.isEmpty {
+        if name.isEmpty || number.isEmpty {
             return nil
         }
         

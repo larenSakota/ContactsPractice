@@ -19,17 +19,22 @@ class ContactsTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
         
-        // Load any saved meals, otherwise load sample data.
+        // Load any saved contacts, otherwise load sample data.
         if let savedContacts = loadContacts() {
             contacts += savedContacts
         }
+//        else {
+//            // Load the sample data.
+//            loadSampleContacts()
+//        }
 
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        tableView.reloadData()
-//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
     
 //    func addBtnPressed(sender: UIBarButtonItem) {
 //        self.performSegue(withIdentifier: "newContact", sender: self)
@@ -41,6 +46,11 @@ class ContactsTableViewController: UITableViewController {
 //        let newIndexPath = IndexPath(row: self.contacts.count - 1, section: 0)
 //        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
 //    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView.isEditing {
@@ -54,10 +64,7 @@ class ContactsTableViewController: UITableViewController {
         return false
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
 
     // MARK: - Table view data source
 
@@ -79,11 +86,13 @@ class ContactsTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of ContactTableViewCell.")
         }
         
-        // Fetches the appropriate meal for the data source layout.
+        // Fetches the appropriate contact for the data source layout.
         let contact = contacts[indexPath.row]
         
         cell.nameLabel.text = contact.name
+        cell.phoneNumber.text = contact.number
         
+
         return cell
     }
     
@@ -186,16 +195,15 @@ class ContactsTableViewController: UITableViewController {
             saveContacts()
         }
     }
-
-
     
-//    let sheilla = Contacts.Person.Name
-//    let laren = Contacts.Person.Name
-//    let ging = Contacts.Person.Name
-//    
-//    self.contacts.append(sheilla)
-//    self.contacts.append(laren)
-//    self.contacts.append(ging)
+//    private func loadSampleContacts() {
+//        
+//        guard let contact1 = Contact(name: "Sheilla Sakota", number: "123-456-7890") else {
+//            fatalError("Unable to instantiate contact1")
+//        }
+//        
+//            contacts += [contact1]
+//    }
     
     private func saveContacts() {
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(contacts, toFile: Contact.ArchiveURL.path)
